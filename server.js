@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost/newsdb");
+mongoose.connect("mongodb://heroku_rprg7395:fflb88vaj58nnrv2meqsf3jct4@ds133094.mlab.com:33094/heroku_rprg7395");
 var db = mongoose.connection;
 
 db.on("error", function(error) {
