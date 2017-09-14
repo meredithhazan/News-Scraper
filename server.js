@@ -45,8 +45,8 @@ app.get("/scrape", function(req, res) {
 				//console.log(test.data("ga-action"));
 				result.title = test.text();
 				result.link = test.attr("href");
-				console.log("Headline: " + result.title);
-				console.log("Link: " + result.link);
+				//console.log("Headline: " + result.title);
+				//console.log("Link: " + result.link);
 				
 				var entry = new Article(result);
 				entry.save(function(err, doc) {
@@ -65,7 +65,7 @@ app.get("/scrape", function(req, res) {
 app.get("/articles", function(req, res) {
 	Article.find({}, function(err, doc) {
 		if (err) {
-			console.log(error);
+			console.log(err);
 		} else {
 			res.json(doc);
 		}
@@ -73,10 +73,12 @@ app.get("/articles", function(req, res) {
 });
 
 app.post("/saved", function(req, res) {
-	console.log(data);
-	db.savedArticles.insert(data, function(err, saved) {
-		if (error) {
-			console.log(error);
+	var savedArticle = new Article(req.body);
+	console.log(savedArticle);
+
+	savedArticle.save(function(err, saved) {
+		if (err) {
+			console.log(err);
 		} else {
 			res.send(saved);
 		}

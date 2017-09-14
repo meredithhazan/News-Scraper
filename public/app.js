@@ -1,6 +1,6 @@
 
 $(document).on("click", "#scrape", function() {
-	$("articles").empty();
+	$("#articles").empty();
 	$.ajax({
 		method: "GET",
 		url: "/scrape/"
@@ -23,17 +23,16 @@ function scrapeArticles() {
 
 $(document).on("click", "#saveArticle", function() {
 	var thisId = $(this).attr("data-id");
-	$.ajax({
-		method: "POST",
-		url: "/saved/" + thisId,
-		data: {
+	data = {
+			articleId: thisId,
 			title: $("#title").val().trim(),
 			topic: $("#topic").val().trim(),
-			link: $("#link").val().trim()
+			link: $("#link").val()
 		}
-	})
-	.done(function(data) {
-		console.log(data);
+
+	$.post("/saved", data)
+	.done(function(returnData) {
+		console.log("Send to server: " + returnData);
 	});
 });
 
