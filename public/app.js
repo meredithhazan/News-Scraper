@@ -1,3 +1,4 @@
+var articleObj = {};
 
 $(document).on("click", "#scrape", function() {
 	$("#articles").empty();
@@ -12,7 +13,7 @@ function scrapeArticles() {
 	$.getJSON("/articles", function(data) {
    	  //$("#articles").empty();	
    	var baseURL = "https://www.entrepreneur.com"; 	
-	for (var i = 0; i < data.length; i++) {
+	for (let i = 0; i < data.length; i++) {
 		$("#articles").append("<h4 id='title'>" + data[i].title + "</h4>");
 		$("#articles").append("<p id='topic'>Topic: " + data[i].topic + "</p>");
 		$("#articles").append("<a href='" + baseURL + data[i].link + "' class='btn btn-outline-dark id='link'>Read now</a> ");
@@ -23,18 +24,12 @@ function scrapeArticles() {
 
 $(document).on("click", "#saveArticle", function() {
 	var thisId = $(this).attr("data-id");
-	data = {
-			articleId: thisId,
-			title: $("#title").val().trim(),
-			topic: $("#topic").val().trim(),
-			link: $("#link").val()
-		}
-
-	$.post("/saved", data)
+	$.post("/saved/" + thisId)
 	.done(function(returnData) {
 		console.log("Send to server: " + returnData);
 	});
 });
+
 
 
 

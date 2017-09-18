@@ -13,8 +13,9 @@ var mongoose = require("mongoose"),
 			type: String,
 			required: true
 		},
-		readTime: {
-			type: String
+		isSaved: {
+			type: Boolean,
+			default: false
 		},
 		note: {
 			type: Schema.Types.ObjectId,

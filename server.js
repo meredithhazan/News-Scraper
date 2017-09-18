@@ -28,9 +28,9 @@ db.once("open", function() {
 
 // Routes
 
-app.get("/", function(req, res) {
+/*app.get("/", function(req, res) {
   res.send(index.html);
-});
+});*/
 
 app.get("/scrape", function(req, res) {
 	request("https://www.entrepreneur.com", function(err, res, html) {
@@ -63,7 +63,7 @@ app.get("/scrape", function(req, res) {
 });
 
 app.get("/articles", function(req, res) {
-	Article.find({}, function(err, doc) {
+	Article.find({/*"isSaved": false*/}, function(err, doc) {
 		if (err) {
 			console.log(err);
 		} else {
@@ -72,18 +72,27 @@ app.get("/articles", function(req, res) {
 	});
 });
 
-app.post("/saved", function(req, res) {
-	var savedArticle = new Article(req.body);
-	console.log(savedArticle);
-
-	savedArticle.save(function(err, saved) {
+app.post("/saved/:id", function(req, res) {
+	Article.findOneAndUpdate({"_id": req.params.id}, {"isSaved": true})
+	.exec(function(err, saved) {
 		if (err) {
-			console.log(err);
+			console.log(error);
 		} else {
 			res.send(saved);
 		}
+	});			
+});
+
+app.get("/saved", function(req, res) {
+	Article.find({"isSaved": true}, function(err, doc) {
+		if (err) {
+			console.log(err);
+		} else {
+			res.send(doc);
+		}
 	});
 });
+
 
 app.listen(process.env.PORT || 3000, function() {
 	console.log("App running on port 3000!");
